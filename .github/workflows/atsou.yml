@@ -26,6 +26,35 @@ jobs:
       run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/bienvenu
 
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v4
+
+      # SSH into the Scaleway server
+      - name: Deploy to Scaleway server via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SCALEWAY_SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+
+          # Run commands on the remote server
+          script: |
+           
+            # Stop the current container if running
+            docker stop bienvenu || true
+            docker rm bienvenu || true
+           
+            # Pull the latest Docker image from the registry
+            docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/bienvenu:latest
+
+            # Run the new container
+            docker run -d --name eugeniotest -p 8023:8023 ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/bienvenu:latest
     # - uses: actions/checkout@v4
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag zach27/atut-bootcamp:v1
