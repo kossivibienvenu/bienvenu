@@ -96,11 +96,7 @@ jobs:
 
 
 
-              # cd leisure-experience-app
-              # docker-compose -f docker-compose.test.yml down
-              # docker load < django.tar
-              # docker load < nextjs.tar
-              # COMPOSE_HTTP_TIMEOUT=200 docker-compose -f docker-compose.test.yml up -d
+              
 
 
 name: Docker Image CI
@@ -174,7 +170,7 @@ jobs:
           key: ${{ secrets.SCALEWAY_SSH_KEY }}
           port: 22
           script: |
-            cd ./bienvenu  # Se déplacer vers le répertoire contenant docker-compose.yml
+            home/bienvenu  # Se déplacer vers le répertoire contenant docker-compose.yml
             docker-compose down           # Arrêter les conteneurs actuels
             docker rm $(docker ps -a -q)  # Supprimer les anciens conteneurs
             docker pull ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/image1  # Tirer la nouvelle image backend
