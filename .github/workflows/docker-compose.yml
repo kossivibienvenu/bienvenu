@@ -50,7 +50,7 @@ jobs:
         password: ${{ secrets.SCALEWAY_API_KEY }}
         registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
     - name: Build the Docker image
-      run: docker-compose build backend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/image1
+      run: docker build .backend/backend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/backendtest
     - name: Push the Docker Image
       run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2
 
@@ -65,7 +65,7 @@ jobs:
         password: ${{ secrets.SCALEWAY_API_KEY }}
         registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
     - name: Build the Docker image
-      run: docker-compose build frontend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/image2
+      run: docker build ./frontend -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/frontendtest
     - name: Push the Docker Image
       run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/groupe-2
 
